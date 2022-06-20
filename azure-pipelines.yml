@@ -41,7 +41,7 @@ stages:
   displayName: Deploy to AKS
   dependsOn: Build
   variables: 
-      myacrsecret: k8secret
+      acrsecret: k8sexamplesearch
   jobs:
   - job: Deploy
     displayName: Deploy to Azure Kubernetes
@@ -59,7 +59,7 @@ stages:
         kubernetesServiceConnection: 'my-aksCluster2022'
         namespace: 'default'
         secretType: 'dockerRegistry'
-        secretName: '$myacrsecret'
+        secretName: '$acrsecret'
         dockerRegistryEndpoint: 'My-ACR'
     - task: KubernetesManifest@0
       inputs:
