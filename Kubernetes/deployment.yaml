@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: static-deployment
+  labels:
+    app: static-website
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: static-website
+  template:
+    metadata:
+      labels:
+        app: static-website
+    spec:
+      containers:
+      - name: nginx
+        image: iacaksws1demo01acr.azurecr.io/webiste
+        ports:
+        - containerPort: 80
