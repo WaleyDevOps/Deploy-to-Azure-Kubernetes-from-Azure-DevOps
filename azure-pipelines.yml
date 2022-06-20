@@ -43,35 +43,38 @@ stages:
   variables: 
       walesecret: k8sexamplesearchauth
   jobs:
-  - job: Deploy
+  - deployment: Deploy
     displayName: Deploy to Azure Kubernetes
+    environment: 'k8sdeployment.default'
     pool:
       vmImage: ubuntu-latest
-    steps:
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        buildType: 'current'
-        artifactName: 'manifests'
-        targetPath: '$(Pipeline.Workspace)/manifests'
-    - task: KubernetesManifest@0
-      inputs:
-        action: 'createSecret'
-        kubernetesServiceConnection: 'my-aksCluster2022'
-        namespace: 'default'
-        secretType: 'dockerRegistry'
-        secretName: '$(walesecret)'
-        dockerRegistryEndpoint: 'My-ACR'
+    strategy:
+      runOnce:
+        deploy: 
+          
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              buildType: 'current'
+              artifactName: 'manifests'
+              targetPath: '$(Pipeline.Workspace)/manifests'
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'createSecret'
+              namespace: 'default'
+              secretType: 'dockerRegistry'
+              secretName: '$(walesecret)'
+              dockerRegistryEndpoint: 'My-ACR'
 
-    - task: KubernetesManifest@0
-      inputs:
-        action: 'deploy'
-        kubernetesServiceConnection: 'my-aksCluster2022'
-        namespace: 'default'
-        manifests: |
-          $(Pipeline.Workspace)/manifests/deployment.yaml
-          $(Pipeline.Workspace)/manifests/service.yaml
-    
-    
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'deploy'
+              namespace: 'default'
+              manifests: |
+                $(Pipeline.Workspace)/manifests/deployment.yaml
+                $(Pipeline.Workspace)/manifests/service.yaml
+          
+          
       
     
 
