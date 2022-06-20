@@ -27,7 +27,7 @@ stages:
           containerRegistry: 'My-ACR'
           repository: '$(imageRepo)'
           command: 'buildAndPush'
-          Dockerfile: '(Pipeline.Workspace)/Website/Dockerfile'
+          Dockerfile: '$(Build.SourcesDirectory)/s/Website/Dockerfile'
           tags: |
             $(tag)
             latest
