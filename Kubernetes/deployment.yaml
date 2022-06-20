@@ -15,7 +15,7 @@ spec:
         app: static-website
     spec:
       containers:
-      - name: nginx
-        image: iacaksws1demo01acr.azurecr.io/webiste
+      - name: web
+        image: iacaksws1demo01acr.azurecr.io/web
         ports:
         - containerPort: 80
