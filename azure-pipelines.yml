@@ -20,22 +20,22 @@ stages:
     displayName: Build
     pool:
       vmImage: ubuntu-latest
-  steps:
+    steps:
   
-  - task: Docker@2
-    inputs:
-        containerRegistry: 'My-ACR'
-        repository: '$(imageRepo)'
-        command: 'buildAndPush'
-        Dockerfile: 'Build.SourcesDirectory)/Website/Dockerfile'
-        tags: |
-          $(tag)
-          latest
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Pipeline.Workspace)/s/kubernetes'
-      artifact: 'manifest'
-      publishLocation: 'pipeline'
+    - task: Docker@2
+      inputs:
+          containerRegistry: 'My-ACR'
+          repository: '$(imageRepo)'
+          command: 'buildAndPush'
+          Dockerfile: 'Build.SourcesDirectory)/Website/Dockerfile'
+          tags: |
+            $(tag)
+            latest
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)/s/kubernetes'
+        artifact: 'manifest'
+        publishLocation: 'pipeline'
 
 - stage: Deploy
   displayName: Deploy to AKS
